@@ -4,7 +4,6 @@ import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
-// ✅ URL del backend (Render en producción o localhost en desarrollo)
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
 
 function Contratos() {
@@ -16,10 +15,11 @@ function Contratos() {
     fecha_fin: "",
     valor: "",
     cargo: "",
+    observacion: "", // ✅ Nuevo campo
   });
   const [editingId, setEditingId] = useState(null);
 
-  // 📦 Obtener contratos y empleados
+  // Obtener contratos y empleados
   const fetchContratos = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/contratos`);
@@ -43,7 +43,7 @@ function Contratos() {
     fetchEmpleados();
   }, []);
 
-  // 📝 Crear o actualizar contrato
+  // Crear o actualizar contrato
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -58,6 +58,7 @@ function Contratos() {
         fecha_fin: "",
         valor: "",
         cargo: "",
+        observacion: "",
       });
       setEditingId(null);
       fetchContratos();
@@ -66,7 +67,7 @@ function Contratos() {
     }
   };
 
-  // 🧾 Exportar PDF
+  // Exportar PDF
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.text("Contratos SIRH Molino", 10, 10);
@@ -77,7 +78,7 @@ function Contratos() {
           c.fecha_inicio
         ).toLocaleDateString()} / ${new Date(
           c.fecha_fin
-        ).toLocaleDateString()} - $${c.valor}`,
+        ).toLocaleDateString()} - $${c.valor} - Obs: ${c.observacion || "N/A"}`,
         10,
         row
       );
@@ -86,7 +87,7 @@ function Contratos() {
     doc.save("contratos.pdf");
   };
 
-  // 📊 Exportar Excel
+  // Exportar Excel
   const exportExcel = () => {
     const dataExcel = contratos.map((c) => ({
       Empleado: c.empleado_id?.nombre || "N/A",
@@ -94,6 +95,7 @@ function Contratos() {
       Fecha_Inicio: new Date(c.fecha_inicio).toLocaleDateString(),
       Fecha_Fin: new Date(c.fecha_fin).toLocaleDateString(),
       Valor: c.valor,
+      Observacion: c.observacion || "", // ✅ Incluimos observación
     }));
     const ws = XLSX.utils.json_to_sheet(dataExcel);
     const wb = XLSX.utils.book_new();
@@ -103,7 +105,6 @@ function Contratos() {
     saveAs(data, "contratos.xlsx");
   };
 
-  // ✏️ Editar contrato
   const handleEdit = (c) => {
     setForm({
       empleado_id: c.empleado_id._id,
@@ -111,11 +112,11 @@ function Contratos() {
       fecha_fin: c.fecha_fin.slice(0, 10),
       valor: c.valor,
       cargo: c.cargo || "",
+      observacion: c.observacion || "", // ✅ Editar observación
     });
     setEditingId(c._id);
   };
 
-  // 🗑️ Eliminar contrato
   const handleDelete = async (id) => {
     if (window.confirm("¿Eliminar contrato?")) {
       await axios.delete(`${API_URL}/api/contratos/${id}`);
@@ -149,6 +150,15 @@ function Contratos() {
           onChange={(e) => setForm({ ...form, cargo: e.target.value })}
           required
         />
+
+        <textarea
+          placeholder="Observación"
+          value={form.observacion}
+          onChange={(e) => setForm({ ...form, observacion: e.target.value })}
+          rows="2"
+          style={{ resize: "none" }}
+        />
+
         <input
           type="date"
           value={form.fecha_inicio}
@@ -179,6 +189,7 @@ function Contratos() {
             <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
             <th>Valor</th>
+            <th>Observación</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -190,6 +201,7 @@ function Contratos() {
               <td>{new Date(c.fecha_inicio).toLocaleDateString()}</td>
               <td>{new Date(c.fecha_fin).toLocaleDateString()}</td>
               <td>{c.valor}</td>
+              <td>{c.observacion || "-"}</td>
               <td>
                 <button onClick={() => handleEdit(c)}>Editar</button>
                 <button onClick={() => handleDelete(c._id)}>Eliminar</button>
@@ -203,75 +215,6 @@ function Contratos() {
         <button onClick={exportPDF}>Exportar PDF</button>
         <button onClick={exportExcel}>Exportar Excel</button>
       </div>
-
-      <style>{`
-        .contratos-container {
-          padding: 20px;
-          background: #f8f9fa;
-          border-radius: 10px;
-          max-width: 900px;
-          margin: 0 auto;
-        }
-        .contrato-form {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-bottom: 15px;
-        }
-        .contrato-form input, 
-        .contrato-form select {
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          flex: 1;
-          min-width: 150px;
-        }
-        .contrato-form button {
-          background: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          padding: 8px 12px;
-          cursor: pointer;
-        }
-        .contrato-form button:hover {
-          background: #0056b3;
-        }
-        .tabla-contratos {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 15px;
-        }
-        .tabla-contratos th, 
-        .tabla-contratos td {
-          border: 1px solid #ccc;
-          padding: 8px;
-          text-align: center;
-        }
-        .tabla-contratos th {
-          background-color: #007bff;
-          color: white;
-        }
-        .tabla-contratos tr:nth-child(even) {
-          background: #f2f2f2;
-        }
-        .export-buttons {
-          margin-top: 15px;
-          display: flex;
-          gap: 10px;
-        }
-        .export-buttons button {
-          background: #28a745;
-          color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        .export-buttons button:hover {
-          background: #218838;
-        }
-      `}</style>
     </div>
   );
 }
