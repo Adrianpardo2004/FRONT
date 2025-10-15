@@ -3,6 +3,8 @@ import axios from "axios";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import "./Contratos.css";
+
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
 
