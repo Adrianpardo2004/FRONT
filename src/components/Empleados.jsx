@@ -5,6 +5,8 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import "./Dashboard.css";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+
 function Empleados() {
   const [empleados, setEmpleados] = useState([]);
   const [q, setQ] = useState("");
@@ -22,7 +24,7 @@ function Empleados() {
   // Obtener empleados
   const fetchEmpleados = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/empleados");
+      const res = await axios.get(`${API_URL}/api/empleados`);
       setEmpleados(res.data);
     } catch (err) {
       console.log(err);
@@ -38,9 +40,9 @@ function Empleados() {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`http://localhost:4000/api/empleados/${editingId}`, form);
+        await axios.put(`${API_URL}/api/empleados/${editingId}`, form);
       } else {
-        await axios.post("http://localhost:4000/api/empleados", form);
+        await axios.post(`${API_URL}/api/empleados`, form);
       }
       setForm({
         nro_documento: "",
@@ -65,8 +67,10 @@ function Empleados() {
       return;
     }
     try {
-      const res = await axios.get(`http://localhost:4000/api/empleados/buscar?q=${q}`);
-      alert(`Empleado: ${res.data.empleado.nombre} ${res.data.empleado.apellido}\nContratos: ${res.data.cantidad_contratos}`);
+      const res = await axios.get(`${API_URL}/api/empleados/buscar?q=${q}`);
+      alert(
+        `Empleado: ${res.data.empleado.nombre} ${res.data.empleado.apellido}\nContratos: ${res.data.cantidad_contratos}`
+      );
     } catch (err) {
       alert("Empleado no encontrado");
     }
@@ -89,7 +93,7 @@ function Empleados() {
   // Eliminar
   const handleDelete = async (id) => {
     if (window.confirm("¿Eliminar empleado y sus contratos?")) {
-      await axios.delete(`http://localhost:4000/api/empleados/${id}`);
+      await axios.delete(`${API_URL}/api/empleados/${id}`);
       fetchEmpleados();
     }
   };
@@ -100,7 +104,11 @@ function Empleados() {
     doc.text("Empleados SIRH Molino", 10, 10);
     let row = 20;
     empleados.forEach((e) => {
-      doc.text(`${e.nro_documento} - ${e.nombre} ${e.apellido} - ${e.cargo} - ${e.estado}`, 10, row);
+      doc.text(
+        `${e.nro_documento} - ${e.nombre} ${e.apellido} - ${e.cargo} - ${e.estado}`,
+        10,
+        row
+      );
       row += 10;
     });
     doc.save("empleados.pdf");
@@ -134,13 +142,47 @@ function Empleados() {
       {/* Formulario */}
       <h3>{editingId ? "Editar empleado" : "Crear empleado"}</h3>
       <form className="data-form" onSubmit={handleSubmit}>
-        <input placeholder="Documento" value={form.nro_documento} onChange={(e) => setForm({ ...form, nro_documento: e.target.value })} required />
-        <input placeholder="Nombre" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} required />
-        <input placeholder="Apellido" value={form.apellido} onChange={(e) => setForm({ ...form, apellido: e.target.value })} required />
-        <input placeholder="Cargo" value={form.cargo} onChange={(e) => setForm({ ...form, cargo: e.target.value })} />
-        <input type="email" placeholder="Correo" value={form.correo} onChange={(e) => setForm({ ...form, correo: e.target.value })} required />
-        <input type="password" placeholder="Contraseña" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-        <select value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
+        <input
+          placeholder="Documento"
+          value={form.nro_documento}
+          onChange={(e) => setForm({ ...form, nro_documento: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Nombre"
+          value={form.nombre}
+          onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Apellido"
+          value={form.apellido}
+          onChange={(e) => setForm({ ...form, apellido: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Cargo"
+          value={form.cargo}
+          onChange={(e) => setForm({ ...form, cargo: e.target.value })}
+        />
+        <input
+          type="email"
+          placeholder="Correo"
+          value={form.correo}
+          onChange={(e) => setForm({ ...form, correo: e.target.value })}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+        />
+        <select
+          value={form.estado}
+          onChange={(e) => setForm({ ...form, estado: e.target.value })}
+        >
           <option value="activo">Activo</option>
           <option value="retirado">Retirado</option>
         </select>
@@ -170,8 +212,15 @@ function Empleados() {
               <td>{e.correo}</td>
               <td>{e.estado}</td>
               <td>
-                <button className="edit-btn" onClick={() => handleEdit(e)}>✏️</button>
-                <button className="delete-btn" onClick={() => handleDelete(e._id)}>🗑️</button>
+                <button className="edit-btn" onClick={() => handleEdit(e)}>
+                  ✏️
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDelete(e._id)}
+                >
+                  🗑️
+                </button>
               </td>
             </tr>
           ))}
