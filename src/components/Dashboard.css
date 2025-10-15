@@ -1,3 +1,5 @@
+/* Dashboard.css - COMBINADO (estructura original + nuevos colores corporativos) */
+
 body {
   background: #f3f6fb;
   font-family: "Segoe UI", Tahoma, sans-serif;
@@ -10,20 +12,22 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #004aad;
+  background: #2AE2D6; /* ✅ Verde Azulado Principal */
   color: #fff;
   padding: 15px 25px;
-  border-bottom: 3px solid #002d6d;
+  border-bottom: 3px solid #1A7B76; /* ✅ Borde inferior Verde Oscuro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logout-btn {
-  background: #e63946;
+  background: #e63946; /* Rojo fuerte */
   border: none;
   padding: 8px 15px;
   color: white;
   font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .logout-btn:hover {
@@ -45,12 +49,18 @@ body {
   padding: 10px 18px;
   border-radius: 6px;
   font-weight: bold;
+  color: #333333; /* ✅ Texto gris oscuro */
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .nav-tabs button.active {
-  background: #004aad;
+  background: #2AE2D6; /* ✅ Pestaña activa Verde Azulado */
   color: white;
+}
+
+.nav-tabs button:hover:not(.active) {
+  background: #b5c7e0; /* Hover sutil en inactivo */
 }
 
 /* Main content */
@@ -61,11 +71,28 @@ body {
 /* Section container */
 .section-container {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 12px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  margin: 20px auto;
-  max-width: 900px;
+  margin: 30px auto;
+  max-width: 1200px; /* 📏 Más ancho */
+  transition: max-width 0.3s ease;
+}
+
+/* 📱 Responsividad */
+@media (max-width: 1200px) {
+  .section-container {
+    max-width: 95%;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-container {
+    max-width: 100%;
+    padding: 20px;
+    margin: 15px auto;
+  }
 }
 
 /* Form styling */
@@ -85,16 +112,18 @@ body {
 }
 
 .data-form button {
-  background: #004aad;
+  background: #2AE2D6; /* ✅ Verde Azulado */
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .data-form button:hover {
-  background: #002d6d;
+  background: #1A7B76; /* ✅ Hover Verde Oscuro */
 }
 
 /* Table */
@@ -105,9 +134,10 @@ body {
 }
 
 .data-table th {
-  background: #004aad;
+  background: #2AE2D6; /* ✅ Encabezado Verde Azulado */
   color: white;
   padding: 10px;
+  text-align: left;
 }
 
 .data-table td {
@@ -116,7 +146,7 @@ body {
 }
 
 .data-table tr:nth-child(even) {
-  background: #f2f5ff;
+  background: #f8f8f8; /* ✅ Fila par más neutra */
 }
 
 .edit-btn, .delete-btn {
@@ -125,17 +155,24 @@ body {
   margin: 0 4px;
   border-radius: 4px;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
 
 .edit-btn {
-  background: #0077b6;
+  background: #1A7B76; /* ✅ Verde Oscuro para Editar */
   color: white;
 }
 
 .delete-btn {
-  background: #e63946;
+  background: #e63946; /* Rojo clásico */
   color: white;
 }
+
+.edit-btn:hover, .delete-btn:hover {
+  opacity: 0.85;
+}
+
+/* Search bar */
 .search-bar {
   display: flex;
   justify-content: center;
@@ -151,35 +188,39 @@ body {
 }
 
 .search-bar button {
-  background: #004aad;
+  background: #2AE2D6; /* ✅ Verde Azulado Principal */
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .search-bar button:hover {
-  background: #002d6d;
+  background: #1A7B76; /* ✅ Hover Verde Oscuro */
 }
 
+/* Export buttons */
 .export-buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end; /* ✅ Alineado a la derecha */
   gap: 10px;
   margin-top: 15px;
 }
 
 .export-buttons button {
-  background: #0077b6;
+  background: #333333; /* ✅ Gris Oscuro */
   color: white;
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .export-buttons button:hover {
-  background: #023e8a;
+  background: #555555; /* ✅ Hover gris más claro */
 }
