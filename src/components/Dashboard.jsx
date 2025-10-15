@@ -14,7 +14,7 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>SIRH Molino</h1>
+        <h1>Interfaz RRHH</h1>
         <button className="logout-btn" onClick={handleLogout}>
           Cerrar sesión
         </button>
