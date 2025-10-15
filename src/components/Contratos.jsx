@@ -4,27 +4,38 @@ import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+// ✅ URL del backend (Render en producción o localhost en desarrollo)
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+
 function Contratos() {
   const [contratos, setContratos] = useState([]);
   const [empleados, setEmpleados] = useState([]);
-  const [form, setForm] = useState({ 
-    empleado_id: "", 
-    fecha_inicio: "", 
-    fecha_fin: "", 
-    valor: "", 
-    cargo: "" 
+  const [form, setForm] = useState({
+    empleado_id: "",
+    fecha_inicio: "",
+    fecha_fin: "",
+    valor: "",
+    cargo: "",
   });
   const [editingId, setEditingId] = useState(null);
 
-  // Obtener contratos y empleados
+  // 📦 Obtener contratos y empleados
   const fetchContratos = async () => {
-    const res = await axios.get("http://localhost:4000/api/contratos");
-    setContratos(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/api/contratos`);
+      setContratos(res.data);
+    } catch (err) {
+      console.error("Error al obtener contratos:", err);
+    }
   };
 
   const fetchEmpleados = async () => {
-    const res = await axios.get("http://localhost:4000/api/empleados");
-    setEmpleados(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/api/empleados`);
+      setEmpleados(res.data);
+    } catch (err) {
+      console.error("Error al obtener empleados:", err);
+    }
   };
 
   useEffect(() => {
@@ -32,31 +43,41 @@ function Contratos() {
     fetchEmpleados();
   }, []);
 
-  // Crear o actualizar contrato
+  // 📝 Crear o actualizar contrato
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`http://localhost:4000/api/contratos/${editingId}`, form);
+        await axios.put(`${API_URL}/api/contratos/${editingId}`, form);
       } else {
-        await axios.post("http://localhost:4000/api/contratos", form);
+        await axios.post(`${API_URL}/api/contratos`, form);
       }
-      setForm({ empleado_id: "", fecha_inicio: "", fecha_fin: "", valor: "", cargo: "" });
+      setForm({
+        empleado_id: "",
+        fecha_inicio: "",
+        fecha_fin: "",
+        valor: "",
+        cargo: "",
+      });
       setEditingId(null);
       fetchContratos();
     } catch (err) {
-      console.log(err);
+      console.error("Error al guardar contrato:", err);
     }
   };
 
-  // Exportar a PDF
+  // 🧾 Exportar PDF
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.text("Contratos SIRH Molino", 10, 10);
     let row = 20;
-    contratos.forEach(c => {
+    contratos.forEach((c) => {
       doc.text(
-        `${c.empleado_id?.nombre || "N/A"} - ${c.cargo || "N/A"} - ${new Date(c.fecha_inicio).toLocaleDateString()} / ${new Date(c.fecha_fin).toLocaleDateString()} - $${c.valor}`,
+        `${c.empleado_id?.nombre || "N/A"} - ${c.cargo || "N/A"} - ${new Date(
+          c.fecha_inicio
+        ).toLocaleDateString()} / ${new Date(
+          c.fecha_fin
+        ).toLocaleDateString()} - $${c.valor}`,
         10,
         row
       );
@@ -65,9 +86,9 @@ function Contratos() {
     doc.save("contratos.pdf");
   };
 
-  // Exportar a Excel
+  // 📊 Exportar Excel
   const exportExcel = () => {
-    const dataExcel = contratos.map(c => ({
+    const dataExcel = contratos.map((c) => ({
       Empleado: c.empleado_id?.nombre || "N/A",
       Cargo: c.cargo || "N/A",
       Fecha_Inicio: new Date(c.fecha_inicio).toLocaleDateString(),
@@ -82,7 +103,7 @@ function Contratos() {
     saveAs(data, "contratos.xlsx");
   };
 
-  // Editar contrato
+  // ✏️ Editar contrato
   const handleEdit = (c) => {
     setForm({
       empleado_id: c.empleado_id._id,
@@ -94,10 +115,10 @@ function Contratos() {
     setEditingId(c._id);
   };
 
-  // Eliminar contrato
+  // 🗑️ Eliminar contrato
   const handleDelete = async (id) => {
     if (window.confirm("¿Eliminar contrato?")) {
-      await axios.delete(`http://localhost:4000/api/contratos/${id}`);
+      await axios.delete(`${API_URL}/api/contratos/${id}`);
       fetchContratos();
     }
   };
@@ -110,11 +131,11 @@ function Contratos() {
       <form onSubmit={handleSubmit} className="contrato-form">
         <select
           value={form.empleado_id}
-          onChange={e => setForm({ ...form, empleado_id: e.target.value })}
+          onChange={(e) => setForm({ ...form, empleado_id: e.target.value })}
           required
         >
           <option value="">Seleccione empleado</option>
-          {empleados.map(emp => (
+          {empleados.map((emp) => (
             <option key={emp._id} value={emp._id}>
               {emp.nombre} {emp.apellido}
             </option>
@@ -125,26 +146,26 @@ function Contratos() {
           type="text"
           placeholder="Cargo"
           value={form.cargo}
-          onChange={e => setForm({ ...form, cargo: e.target.value })}
+          onChange={(e) => setForm({ ...form, cargo: e.target.value })}
           required
         />
         <input
           type="date"
           value={form.fecha_inicio}
-          onChange={e => setForm({ ...form, fecha_inicio: e.target.value })}
+          onChange={(e) => setForm({ ...form, fecha_inicio: e.target.value })}
           required
         />
         <input
           type="date"
           value={form.fecha_fin}
-          onChange={e => setForm({ ...form, fecha_fin: e.target.value })}
+          onChange={(e) => setForm({ ...form, fecha_fin: e.target.value })}
           required
         />
         <input
           type="number"
           placeholder="Valor"
           value={form.valor}
-          onChange={e => setForm({ ...form, valor: e.target.value })}
+          onChange={(e) => setForm({ ...form, valor: e.target.value })}
           required
         />
         <button type="submit">{editingId ? "Actualizar" : "Crear"}</button>
@@ -162,7 +183,7 @@ function Contratos() {
           </tr>
         </thead>
         <tbody>
-          {contratos.map(c => (
+          {contratos.map((c) => (
             <tr key={c._id}>
               <td>{c.empleado_id?.nombre || "N/A"}</td>
               <td>{c.cargo || "N/A"}</td>
