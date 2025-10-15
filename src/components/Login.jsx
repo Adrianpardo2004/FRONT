@@ -21,8 +21,8 @@ function Login() {
       if (res.data.token) {
         const empleado = res.data.empleado;
 
-        // ✅ Solo permite si el rol es exactamente "RRHH"
-        if (empleado.rol === "RRHH") {
+        // ✅ Solo permite acceso a quienes tienen cargo "RRHH"
+        if (empleado.cargo === "RRHH") {
           localStorage.setItem("token", res.data.token);
           window.location.href = "/dashboard";
         } else {
