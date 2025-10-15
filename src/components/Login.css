@@ -1,0 +1,135 @@
+/* Fondo general con degradado */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+  background-size: 300% 300%;
+  animation: gradientShift 10s ease infinite;
+}
+
+/* Animación del fondo */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Tarjeta del login */
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Título */
+.login-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs */
+.input-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Botón de login */
+.btn-login {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2563eb;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-login:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.02);
+}
+
+.btn-login:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+/* Botón de recuperar contraseña */
+.btn-recuperar {
+  margin-top: 1.2rem;
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.btn-recuperar:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .login-card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+}

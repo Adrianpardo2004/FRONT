@@ -1,0 +1,185 @@
+body {
+  background: #f3f6fb;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  margin: 0;
+  color: #333;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #004aad;
+  color: #fff;
+  padding: 15px 25px;
+  border-bottom: 3px solid #002d6d;
+}
+
+.logout-btn {
+  background: #e63946;
+  border: none;
+  padding: 8px 15px;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #c1121f;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  background: #e0e6f6;
+  padding: 10px;
+  gap: 10px;
+}
+
+.nav-tabs button {
+  background: #c8d6f0;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-tabs button.active {
+  background: #004aad;
+  color: white;
+}
+
+/* Main content */
+.dashboard-content {
+  padding: 20px;
+}
+
+/* Section container */
+.section-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+/* Form styling */
+.data-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.data-form input,
+.data-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+.data-form button {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.data-form button:hover {
+  background: #002d6d;
+}
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.data-table th {
+  background: #004aad;
+  color: white;
+  padding: 10px;
+}
+
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.data-table tr:nth-child(even) {
+  background: #f2f5ff;
+}
+
+.edit-btn, .delete-btn {
+  border: none;
+  padding: 6px 10px;
+  margin: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #0077b6;
+  color: white;
+}
+
+.delete-btn {
+  background: #e63946;
+  color: white;
+}
+.search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.search-bar button {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-bar button:hover {
+  background: #002d6d;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.export-buttons button {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.export-buttons button:hover {
+  background: #023e8a;
+}
