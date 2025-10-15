@@ -17,9 +17,17 @@ function Login() {
         correo,
         password,
       });
+
       if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        window.location.href = "/dashboard";
+        const empleado = res.data.empleado;
+
+        // ✅ Solo permite si el rol es exactamente "RRHH"
+        if (empleado.rol === "RRHH") {
+          localStorage.setItem("token", res.data.token);
+          window.location.href = "/dashboard";
+        } else {
+          alert("Acceso denegado. Solo el personal de RRHH puede ingresar.");
+        }
       } else {
         alert("Correo o contraseña incorrecta");
       }
