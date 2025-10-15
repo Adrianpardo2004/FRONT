@@ -14,6 +14,8 @@ function Empleados() {
     nro_documento: "",
     nombre: "",
     apellido: "",
+    edad: "",
+    genero: "",
     cargo: "",
     estado: "activo",
     correo: "",
@@ -35,19 +37,44 @@ function Empleados() {
     fetchEmpleados();
   }, []);
 
+  // Validación: impedir enviar si todo es 0 o edad fuera de rango
+  const validarCampos = () => {
+    const valores = Object.values(form).map((v) => v.toString().trim());
+    const todosCero = valores.every((v) => v === "0" || v === "");
+    if (todosCero) {
+      alert("❌ No puedes ingresar todos los campos en cero o vacíos.");
+      return false;
+    }
+
+    // Validar edad entre 18 y 100
+    const edad = parseInt(form.edad);
+    if (isNaN(edad) || edad < 18 || edad > 100) {
+      alert("❌ La edad debe estar entre 18 y 100 años.");
+      return false;
+    }
+
+    return true;
+  };
+
   // Crear o actualizar empleado
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validarCampos()) return;
+
     try {
       if (editingId) {
         await axios.put(`${API_URL}/api/empleados/${editingId}`, form);
       } else {
         await axios.post(`${API_URL}/api/empleados`, form);
       }
+
       setForm({
         nro_documento: "",
         nombre: "",
         apellido: "",
+        edad: "",
+        genero: "",
         cargo: "",
         estado: "activo",
         correo: "",
@@ -57,6 +84,7 @@ function Empleados() {
       fetchEmpleados();
     } catch (err) {
       console.log(err);
+      alert("⚠️ Error al guardar el empleado.");
     }
   };
 
@@ -82,6 +110,8 @@ function Empleados() {
       nro_documento: empleado.nro_documento,
       nombre: empleado.nombre,
       apellido: empleado.apellido,
+      edad: empleado.edad || "",
+      genero: empleado.genero || "",
       cargo: empleado.cargo,
       estado: empleado.estado,
       correo: empleado.correo,
@@ -105,7 +135,7 @@ function Empleados() {
     let row = 20;
     empleados.forEach((e) => {
       doc.text(
-        `${e.nro_documento} - ${e.nombre} ${e.apellido} - ${e.cargo} - ${e.estado}`,
+        `${e.nro_documento} - ${e.nombre} ${e.apellido} - ${e.edad || "-"} años - ${e.genero || "-"} - ${e.cargo} - ${e.estado}`,
         10,
         row
       );
@@ -161,6 +191,25 @@ function Empleados() {
           required
         />
         <input
+          type="number"
+          placeholder="Edad (18-100)"
+          value={form.edad}
+          onChange={(e) => setForm({ ...form, edad: e.target.value })}
+          required
+          min="18"
+          max="100"
+        />
+        <select
+          value={form.genero}
+          onChange={(e) => setForm({ ...form, genero: e.target.value })}
+          required
+        >
+          <option value="">Género</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <input
           placeholder="Cargo"
           value={form.cargo}
           onChange={(e) => setForm({ ...form, cargo: e.target.value })}
@@ -196,6 +245,8 @@ function Empleados() {
             <th>Documento</th>
             <th>Nombre</th>
             <th>Apellido</th>
+            <th>Edad</th>
+            <th>Género</th>
             <th>Cargo</th>
             <th>Correo</th>
             <th>Estado</th>
@@ -208,6 +259,8 @@ function Empleados() {
               <td>{e.nro_documento}</td>
               <td>{e.nombre}</td>
               <td>{e.apellido}</td>
+              <td>{e.edad || "-"}</td>
+              <td>{e.genero || "-"}</td>
               <td>{e.cargo}</td>
               <td>{e.correo}</td>
               <td>{e.estado}</td>
