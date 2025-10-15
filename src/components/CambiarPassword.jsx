@@ -1,30 +1,30 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./Login.css"; // reutiliza el estilo de Login
+import "./Login.css"; // reutiliza el estilo del login
 
 function CambiarPassword() {
   const [nuevaPassword, setNuevaPassword] = useState("");
   const [confirmarPassword, setConfirmarPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const [tokenValido, setTokenValido] = useState(false);
   const [token, setToken] = useState("");
+  const [tokenValido, setTokenValido] = useState(false);
 
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    // extraer token de la URL
     const params = new URLSearchParams(window.location.search);
     const t = params.get("token");
     if (t) {
       setToken(t);
       setTokenValido(true);
     } else {
-      setMensaje("Token no válido o expirado");
+      setMensaje("Token inválido o expirado");
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (nuevaPassword !== confirmarPassword) {
       setMensaje("Las contraseñas no coinciden");
       return;
@@ -37,7 +37,7 @@ function CambiarPassword() {
       });
       setMensaje(res.data.message);
       setTimeout(() => {
-        window.location.href = "/"; // volver al login
+        window.location.href = "/";
       }, 2000);
     } catch (err) {
       setMensaje(err.response?.data?.message || "Error al cambiar contraseña");
@@ -49,7 +49,7 @@ function CambiarPassword() {
       <div className="login-container">
         <div className="login-card">
           <h2 className="login-title">Recuperación de contraseña</h2>
-          <p>{mensaje || "Token inválido o expirado"}</p>
+          <p>{mensaje}</p>
         </div>
       </div>
     );
@@ -64,7 +64,6 @@ function CambiarPassword() {
             <label>Nueva contraseña</label>
             <input
               type="password"
-              placeholder="••••••••"
               value={nuevaPassword}
               onChange={(e) => setNuevaPassword(e.target.value)}
               required
@@ -75,7 +74,6 @@ function CambiarPassword() {
             <label>Confirmar contraseña</label>
             <input
               type="password"
-              placeholder="••••••••"
               value={confirmarPassword}
               onChange={(e) => setConfirmarPassword(e.target.value)}
               required
