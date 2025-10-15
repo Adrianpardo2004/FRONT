@@ -1,10 +1,13 @@
+/* Login.css - COMBINADO (estructura original + nuevos colores) */
+
 /* Fondo general con degradado */
 .login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+  /* ✅ NUEVO: Degradado con colores corporativos */
+  background: linear-gradient(135deg, #2AE2D6, #1A7B76, #333333);
   background-size: 300% 300%;
   animation: gradientShift 10s ease infinite;
 }
@@ -50,7 +53,8 @@
 .login-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1f2937;
+  /* ✅ NUEVO: Color gris oscuro */
+  color: #333333;
   margin-bottom: 1.5rem;
 }
 
@@ -63,7 +67,8 @@
 .input-group label {
   display: block;
   margin-bottom: 0.3rem;
-  color: #374151;
+  /* ✅ NUEVO: Color gris oscuro */
+  color: #333333;
   font-weight: 500;
 }
 
@@ -78,15 +83,17 @@
 
 .input-group input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  /* ✅ NUEVO: Color verde-azulado */
+  border-color: #2AE2D6;
+  box-shadow: 0 0 0 3px rgba(42, 226, 214, 0.4);
 }
 
 /* Botón de login */
 .btn-login {
   width: 100%;
   padding: 0.8rem;
-  background-color: #2563eb;
+  /* ✅ NUEVO: Color verde-azulado principal */
+  background-color: #2AE2D6;
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -97,12 +104,14 @@
 }
 
 .btn-login:hover {
-  background-color: #1d4ed8;
+  /* ✅ NUEVO: Verde oscuro en hover */
+  background-color: #1A7B76;
   transform: scale(1.02);
 }
 
 .btn-login:disabled {
-  background-color: #93c5fd;
+  /* ✅ NUEVO: Color claro al deshabilitar */
+  background-color: #A0F1EC;
   cursor: not-allowed;
 }
 
@@ -111,14 +120,16 @@
   margin-top: 1.2rem;
   background: none;
   border: none;
-  color: #2563eb;
+  /* ✅ NUEVO: Verde-azulado principal */
+  color: #2AE2D6;
   cursor: pointer;
   font-size: 0.9rem;
   transition: color 0.2s;
 }
 
 .btn-recuperar:hover {
-  color: #1e40af;
+  /* ✅ NUEVO: Verde oscuro en hover */
+  color: #1A7B76;
   text-decoration: underline;
 }
 
